@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quiz App</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f2f2f2; text-align: center; }
+    .quiz-box { background: white; padding: 20px; margin: 50px auto; width: 400px; border-radius: 10px; box-shadow: 0px 0px 10px gray; }
+    button { margin: 10px; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+    .correct { background: lightgreen; }
+    .wrong { background: salmon; }
+  </style>
+</head>
+<body>
+  <div class="quiz-box">
+    <h2 id="question">Question text</h2>
+    <div id="options"></div>
+    <button onclick="nextQuestion()">Next</button>
+    <h3 id="score"></h3>
+  </div>
+
+  <script>
+    const quiz = [
+      { q: "What is the capital of India?", options: ["Delhi", "Mumbai", "Kolkata", "Chennai"], answer: 0 },
+      { q: "Who developed Python?", options: ["Dennis Ritchie", "Guido van Rossum", "James Gosling", "Bjarne Stroustrup"], answer: 1 },
+      { q: "2 + 2 = ?", options: ["3", "4", "5", "22"], answer: 1 }
+    ];
+
+    let current = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      document.getElementById("question").innerText = quiz[current].q;
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+      quiz[current].options.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(i, btn);
+        optionsDiv.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(i, btn) {
+      if (i === quiz[current].answer) {
+        btn.classList.add("correct");
+        score++;
+      } else {
+        btn.classList.add("wrong");
+      }
+      document.getElementById("score").innerText = "Score: " + score;
+    }
+
+    function nextQuestion() {
+      current++;
+      if (current < quiz.length) {
+        loadQuestion();
+      } else {
+        document.getElementById("question").innerText = "Quiz Finished!";
+        document.getElementById("options").innerHTML = "";
+      }
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
